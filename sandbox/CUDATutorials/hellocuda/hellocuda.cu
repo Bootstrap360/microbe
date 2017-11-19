@@ -19,24 +19,24 @@ int main()
 	char a[N] = "Hello \0\0\0\0\0\0";
 	int b[N] = {15, 10, 6, 0, -11, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
  
-	char *ad;
-	int *bd;
+	char *d_a;
+	int *d_b;
 	const int csize = N*sizeof(char);
 	const int isize = N*sizeof(int);
  
 	printf("%s", a);
  
-	cudaMalloc( (void**)&ad, csize ); 
-	cudaMalloc( (void**)&bd, isize ); 
-	cudaMemcpy( ad, a, csize, cudaMemcpyHostToDevice ); 
-	cudaMemcpy( bd, b, isize, cudaMemcpyHostToDevice ); 
+	cudaMalloc( (void**)&d_a, csize ); 
+	cudaMalloc( (void**)&d_b, isize ); 
+	cudaMemcpy( d_a, a, csize, cudaMemcpyHostToDevice ); 
+	cudaMemcpy( d_b, b, isize, cudaMemcpyHostToDevice ); 
 	
 	dim3 dimBlock( blocksize, 1 );
 	dim3 dimGrid( 1, 1 );
-	hello<<<dimGrid, dimBlock>>>(ad, bd);
-	cudaMemcpy( a, ad, csize, cudaMemcpyDeviceToHost ); 
-	cudaFree( ad );
-	cudaFree( bd );
+	hello<<<dimGrid, dimBlock>>>(d_a, d_b);
+	cudaMemcpy( a, d_a, csize, cudaMemcpyDeviceToHost ); 
+	cudaFree( d_a );
+	cudaFree( d_b );
 	
 	printf("%s\n", a);
 	return EXIT_SUCCESS;
