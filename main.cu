@@ -20,6 +20,9 @@ int main(int argc, char *argv[])
     std::cout << "Thrust v" << major << "." << minor << std::endl;
     
 
+    thrust::device_vector<Microbe> microbes;
+
+
     Microbe m;
     m.Print();
     m.Simulate();
