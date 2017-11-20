@@ -2,6 +2,7 @@
 #include <thrust/version.h>
 
 #include <thrust/device_vector.h> 
+#include <thrust/host_vector.h> 
 #include <thrust/transform.h> 
 #include <thrust/sequence.h> 
 #include <thrust/copy.h> 
@@ -19,13 +20,23 @@ int main(int argc, char *argv[])
 
     std::cout << "Thrust v" << major << "." << minor << std::endl;
     
+    double dt = 0.1;
+    int num_microbes = 8;
 
-    thrust::device_vector<Microbe> microbes;
+    Microbe m(0, 0.1);
+
+    // thrust::host_vector<Microbe> h_microbes();
+    // for(int i = 0; i < num_microbes; i++)
+    // {
+    //     Microbe newMicrobe(i, dt);
+    //     host_vector.push_back(newMicrobe);
+    // }
+
+    // thrust::device_vector<Microbe> d_microbes = h_microbes;
 
 
-    Microbe m;
-    m.Print();
-    m.Simulate();
-    m.Print();
+    // Microbe::kernal_Simulate <<1, 32>>(d_microbes.begin(), d_microbes.end());
+
+
     return 0;
 }
