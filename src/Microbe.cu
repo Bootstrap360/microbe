@@ -2,11 +2,20 @@
 
 #include "Microbe.h"
 
-__device__ __host__ Microbe::Microbe(long ID, double dt = 0.01)
+__host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instructions)
     : m_ID(ID)
     , m_dt(dt)
 {
-    
+    h_poses = thrust::host_vector<State> (num_poses);
+    h_velocities = thrust::host_vector<Velocity> (num_poses);
+    d_instructions = thrust::host_vector<Velocity> (num_poses);
+}
+
+__host void Microbe::Upload()
+{
+    d_poses = h_poses;
+    d_velocities = h_velocities;
+    d_instructions = h_instructions;
 }
 
  __device__ void Microbe::Step(const State& pose, 

@@ -6,6 +6,12 @@
 struct State
 {
     double x, y, theta;
+    bool isAlive;
+};
+
+struct Velocity
+{
+    double x, y, omega;
 };
 
 struct Command
@@ -16,11 +22,11 @@ struct Command
 class Microbe
 {
     public:
-        __device__ __host__ Microbe(long ID, double dt = 0.01);
+        __host__ Microbe(long ID, double dt = 0.01, int num_poses = 256, int num_instructions = 5);
 
 
         __device__ static void Step(const State& pose, 
-                                    const State& velocity, 
+                                    const Velocity& velocity, 
                                     const Command& command, 
                                     State& nextPose, 
                                     State& nextVelocity);
@@ -32,9 +38,16 @@ class Microbe
     
         long m_ID;
 
+        __host__ void Upload();
+
+        thrust::host_vector<State> h_poses;
+        thrust::host_vector<Velocity> h_velocities;
+        thrust::host_vector<double> h_instructions;
+
     private:
 
         // TODO: Need pointers to below for computing
+
         
         thrust::device_vector<State> d_poses;
         thrust::device_vector<State> d_velocities;
