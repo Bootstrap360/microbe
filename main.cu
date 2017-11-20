@@ -13,6 +13,21 @@
 
 #include "Microbe.h"
 
+struct printf_functor
+{
+  __host__ __device__
+  void operator()(double x)
+  {
+    printf("%f\n", x);
+  }
+};
+
+__global__
+void hellWorld(int test)
+{
+    printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
+}
+
 int main(int argc, char *argv[])
 {
     int major = THRUST_MAJOR_VERSION;
@@ -20,10 +35,10 @@ int main(int argc, char *argv[])
 
     std::cout << "Thrust v" << major << "." << minor << std::endl;
     
-    double dt = 0.1;
-    int num_microbes = 8;
+    // double dt = 0.1;
+    // int num_microbes = 8;
 
-    Microbe m(0, 0.1);
+    // Microbe m(0, 0.1);
 
     // thrust::host_vector<Microbe> h_microbes();
     // for(int i = 0; i < num_microbes; i++)
@@ -34,9 +49,8 @@ int main(int argc, char *argv[])
 
     // thrust::device_vector<Microbe> d_microbes = h_microbes;
 
-
-    // Microbe::kernal_Simulate <<1, 32>>(d_microbes.begin(), d_microbes.end());
-
+    // kernal_Simulate <<1, 32>>(d_microbes.begin(), d_microbes.end());
+    hellWorld<<<1,32>>>(0.5);
 
     return 0;
 }

@@ -6,10 +6,13 @@ set ( CMAKE_CXX_STANDARD 14)
 
 find_package( CUDA QUIET REQUIRED )
 
+# nvcc flags                                                                                                                                                                                               
+set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_30,code=sm_30)
+
 include_directories ( ${PROJECT_SOURCE_DIR}/include )
 
 file (GLOB SRC_FILES 
-    ${PROJECT_SOURCE_DIR}/inclde/*.h
+    ${PROJECT_SOURCE_DIR}/include/*.h
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/*.cu
     )

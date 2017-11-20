@@ -25,48 +25,42 @@ class Microbe
         __host__ Microbe(long ID, double dt = 0.01, int num_poses = 256, int num_instructions = 5);
 
 
-        __device__ static void Step(const State& pose, 
-                                    const Velocity& velocity, 
-                                    const Command& command, 
-                                    State& nextPose, 
-                                    State& nextVelocity);
+        // __device__ static void Step(const State& pose, 
+        //                             const Velocity& velocity, 
+        //                             const Command& command, 
+        //                             State& nextPose, 
+        //                             State& nextVelocity);
 
-        __device__ void Simulate();
+        // __device__ void Simulate();
 
-        __device__ Microbe&  AsexualReproduce();
-        __device__ Microbe&  SexualReproduce( const Microbe & other);
+        // __device__ Microbe&  AsexualReproduce();
+        // __device__ Microbe&  SexualReproduce( const Microbe & other);
     
-        long m_ID;
+        // long m_ID;
 
-        __host__ void Upload();
+        // __host__ void Upload();
 
-        thrust::host_vector<State> h_poses;
-        thrust::host_vector<Velocity> h_velocities;
-        thrust::host_vector<double> h_instructions;
+        // thrust::host_vector<State> h_poses;
+        // thrust::host_vector<Velocity> h_velocities;
+        // thrust::host_vector<double> h_instructions;
 
     private:
 
         // TODO: Need pointers to below for computing
 
         
-        thrust::device_vector<State> d_poses;
-        thrust::device_vector<State> d_velocities;
-        thrust::device_vector<double> d_instructions;
+        // thrust::device_vector<State> d_poses;
+        // thrust::device_vector<State> d_velocities;
+        // thrust::device_vector<double> d_instructions;
 
 
-        double m_dt;
+        // double m_dt;
     
-    __device__ bool operator< (const Microbe & rhs) const;
+    // __device__ bool operator< (const Microbe & rhs) const;
     
-    __global__ 
-    static void kernal_Simulate(int num_microbes)
-    {
-        int microbe_number = ThreadId.x;
-        if(microbe_number < num_microbes)
-        {
-                printf("Calling simulate on microbe_number %d", microbe_number);
-            //     d_microbes[microbe_number].Simulate();
-        }
-    };
+    
 
 };
+
+__global__ 
+void kernal_Simulate(int num_microbes);
