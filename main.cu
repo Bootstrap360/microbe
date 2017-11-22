@@ -11,6 +11,11 @@
 #include <thrust/functional.h> 
 #include <iostream>
 
+#include <stdio.h>
+#include <assert.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
+
 #include "Microbe.h"
 
 struct printf_functor
@@ -35,22 +40,25 @@ int main(int argc, char *argv[])
 
     std::cout << "Thrust v" << major << "." << minor << std::endl;
     
-    // double dt = 0.1;
-    // int num_microbes = 8;
+    double dt = 0.1;
+    int num_microbes = 8;
 
     // Microbe m(0, 0.1);
 
-    // thrust::host_vector<Microbe> h_microbes();
-    // for(int i = 0; i < num_microbes; i++)
-    // {
-    //     Microbe newMicrobe(i, dt);
-    //     host_vector.push_back(newMicrobe);
-    // }
+    thrust::host_vector<Microbe> h_microbes;
+    for(int i = 0; i < num_microbes; i++)
+    {
+        Microbe newMicrobe(i, dt);
+        h_microbes.push_back(newMicrobe);
+    }
 
-    // thrust::device_vector<Microbe> d_microbes = h_microbes;
+    thrust::device_vector<Microbe> d_microbes = h_microbes;
 
-    // kernal_Simulate <<1, 32>>(d_microbes.begin(), d_microbes.end());
-    hellWorld<<<1,32>>>(0.5);
+    thrust::for_each(d_microbes.begin(), d_microbes.end(), Simulate_functor());
 
+    // kernal_Simulate <<<1, 32>>>(d_microbes.begin(), d_microbes.end());
+    // kernal_Simulate <<<5, 32>>>(num_microbes);
+    // cudaDeviceSynchronize();
+    
     return 0;
 }

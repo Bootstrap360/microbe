@@ -4,6 +4,7 @@
 #include "Microbe.h"
 
 __host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instructions)
+    : m_ID(ID)
 {
     // h_poses = thrust::host_vector<State> (num_poses);
     // h_velocities = thrust::host_vector<Velocity> (num_poses);
@@ -26,10 +27,10 @@ __host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instruction
 
 // }
 
-// __device__ void Microbe::Simulate()
-// {
-//     printf("Simulating %d", m_ID);
-// }
+__device__ void Microbe::Simulate()
+{
+    printf("Simulating %d", m_ID);
+}
 
 // __device__ Microbe&  Microbe::AsexualReproduce()
 // {
@@ -49,15 +50,15 @@ __host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instruction
 //     return false;
 // }
 
-__global__ 
-void kernal_Simulate(int num_microbes)
-{
-    int microbe_number = threadIdx.x;
-    printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
-    if(microbe_number < num_microbes)
-    {
-            printf("Calling simulate on microbe_number %d", microbe_number);
-        //     d_microbes[microbe_number].Simulate();
-    }
-}
+// __global__ 
+// void kernal_Simulate(int num_microbes)
+// {
+//     int microbe_number = blockIdx.x * blockDim.x + threadIdx.x;
+//     if(microbe_number < num_microbes)
+//     {
+//             printf("Hello from block %d, blockdim %d, thread %d\n", blockIdx.x,  blockDim.x, threadIdx.x);
+//             printf("Calling simulate on microbe_number %d\n", microbe_number);
+//         //     d_microbes[microbe_number].Simulate();
+//     }
+// }
 

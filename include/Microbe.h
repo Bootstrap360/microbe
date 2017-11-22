@@ -31,12 +31,12 @@ class Microbe
         //                             State& nextPose, 
         //                             State& nextVelocity);
 
-        // __device__ void Simulate();
+        __device__ void Simulate();
 
         // __device__ Microbe&  AsexualReproduce();
         // __device__ Microbe&  SexualReproduce( const Microbe & other);
     
-        // long m_ID;
+        long m_ID;
 
         // __host__ void Upload();
 
@@ -64,3 +64,19 @@ class Microbe
 
 __global__ 
 void kernal_Simulate(int num_microbes);
+
+struct Simulate_functor
+{
+    __device__
+    void operator()(Microbe& microbe)
+    {
+        int microbe_number = blockIdx.x * blockDim.x + threadIdx.x;
+        printf("Hello from block %d, blockdim %d, thread %d\n", blockIdx.x,  blockDim.x, threadIdx.x);
+        printf("Calling simulate on microbe_number %d\n", microbe_number);
+        microbe.Simulate();
+        // if(microbe_number < num_microbes)
+        // {
+        //     //     d_microbes[microbe_number].Simulate();
+        // }
+    }
+};
