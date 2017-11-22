@@ -74,9 +74,5 @@ struct Simulate_functor
         printf("Hello from block %d, blockdim %d, thread %d\n", blockIdx.x,  blockDim.x, threadIdx.x);
         printf("Calling simulate on microbe_number %d\n", microbe_number);
         microbe.Simulate();
-        // if(microbe_number < num_microbes)
-        // {
-        //     //     d_microbes[microbe_number].Simulate();
-        // }
     }
 };

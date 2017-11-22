@@ -29,7 +29,7 @@ __host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instruction
 
 __device__ void Microbe::Simulate()
 {
-    printf("Simulating %d", m_ID);
+    printf("Simulating %d \n", m_ID);
 }
 
 // __device__ Microbe&  Microbe::AsexualReproduce()
