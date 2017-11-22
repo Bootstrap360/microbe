@@ -1,15 +1,29 @@
 
 #include <stdio.h>
+#include <thrust/sequence.h>
 
 #include "Microbe.h"
 
-__host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instructions)
+__host__ Microbe::Microbe(int ID, double dt, int num_poses, int num_instructions)
     : m_ID(ID)
 {
     // h_poses = thrust::host_vector<State> (num_poses);
     // h_velocities = thrust::host_vector<Velocity> (num_poses);
-    // d_instructions = thrust::host_vector<Velocity> (num_poses);
+    thrust::host_vector<int> h_instructions (num_instructions);
+    for(int i = 0; i < num_instructions; i ++)
+    {
+        h_instructions[i] = i;
+        printf("generating %i ", m_ID);
+        printf("instruction = %d\n", h_instructions[i]);
+    }
+    thrust::device_vector<int> d_instructions = h_instructions;
+    thrust::device_ptr<int> dev_ptr = d_instructions.data();
+    d_instructions_ptr = thrust::raw_pointer_cast(dev_ptr);
+    d_instructions_length = num_instructions;
+
 }
+
+// TODO: d_instructions is going to go out of scope. Need to hold onto memory
 
 // __host void Microbe::Upload()
 // {
@@ -29,7 +43,11 @@ __host__ Microbe::Microbe(long ID, double dt, int num_poses, int num_instruction
 
 __device__ void Microbe::Simulate()
 {
-    printf("Simulating %d \n", m_ID);
+    for(int i = 0; i < d_instructions_length; i ++)
+    {
+         printf("Simulating %i ",m_ID);
+         printf("instruction = %i \n", d_instructions_ptr[i]);
+    }
 }
 
 // __device__ Microbe&  Microbe::AsexualReproduce()

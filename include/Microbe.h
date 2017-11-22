@@ -3,6 +3,8 @@
 #include <thrust/device_vector.h> 
 #include <thrust/device_reference.h> 
 
+#include "gpuErrchk.h"
+
 struct State
 {
     double x, y, theta;
@@ -22,7 +24,7 @@ struct Command
 class Microbe
 {
     public:
-        __host__ Microbe(long ID, double dt = 0.01, int num_poses = 256, int num_instructions = 5);
+        __host__ Microbe(int ID, double dt = 0.01, int num_poses = 256, int num_instructions = 5);
 
 
         // __device__ static void Step(const State& pose, 
@@ -36,13 +38,16 @@ class Microbe
         // __device__ Microbe&  AsexualReproduce();
         // __device__ Microbe&  SexualReproduce( const Microbe & other);
     
-        long m_ID;
+        int m_ID;
 
         // __host__ void Upload();
 
         // thrust::host_vector<State> h_poses;
         // thrust::host_vector<Velocity> h_velocities;
         // thrust::host_vector<double> h_instructions;
+
+        int * d_instructions_ptr; 
+        int d_instructions_length; 
 
     private:
 
