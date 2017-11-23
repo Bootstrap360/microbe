@@ -1,14 +1,7 @@
 
 #include <thrust/version.h>
 
-#include <thrust/device_vector.h> 
-#include <thrust/host_vector.h> 
-#include <thrust/transform.h> 
-#include <thrust/sequence.h> 
-#include <thrust/copy.h> 
-#include <thrust/fill.h> 
-#include <thrust/replace.h> 
-#include <thrust/functional.h> 
+#include <vector>
 #include <iostream>
 
 #include <stdio.h>
@@ -45,16 +38,25 @@ int main(int argc, char *argv[])
 
     // Microbe m(0, 0.1);
 
-    thrust::host_vector<Microbe> h_microbes;
+    std::vector<Microbe> microbes;
     for(int i = 0; i < num_microbes; i++)
     {
         Microbe newMicrobe(i, dt);
-        h_microbes.push_back(newMicrobe);
+        microbes.push_back(newMicrobe);
     }
 
-    thrust::device_vector<Microbe> d_microbes = h_microbes;
+    thrust::host_vector<MicrobeData> h_microbesData;
+    for(int i = 0; i < num_microbes; i++)
+    {
+        h_microbesData.push_back(microbes[i].GetGPUData());
+    }
+    thrust::device_vector<MicrobeData> d_microbesData;
+    d_microbesData = h_microbesData;
 
-    thrust::for_each(d_microbes.begin(), d_microbes.end(), Simulate_functor());
+
+    // thrust::device_vector<Microbe> d_microbes = microbes;
+
+    thrust::for_each(d_microbesData.begin(), d_microbesData.end(), functor_Simulate());
 
     // kernal_Simulate <<<1, 32>>>(d_microbes.begin(), d_microbes.end());
     // kernal_Simulate <<<5, 32>>>(num_microbes);
